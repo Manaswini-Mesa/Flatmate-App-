@@ -2,19 +2,18 @@
 
 import type { Session } from "@supabase/supabase-js";
 import { useAuth } from "./AuthProvider";
-import { GoogleButton } from "./GoogleButton";
+import { SignInForm } from "./SignInForm";
 
-export function RequireAuth({ next, children }: { next: string; children: (session: Session) => React.ReactNode }) {
+// Shows the sign-in form in place of the page until someone is signed in,
+// so invite links (/join/CODE) keep working after signing in.
+export function RequireAuth({ children }: { children: (session: Session) => React.ReactNode }) {
   const { session, loading } = useAuth();
   if (loading) return <p className="p-6 text-slate-500">Loading…</p>;
   if (!session) {
     return (
-      <main className="mx-auto max-w-md p-6">
-        <div className="card text-center">
-          <h1 className="text-lg font-semibold">Sign in to continue</h1>
-          <p className="mt-1 mb-4 text-sm text-slate-600">Use your Google account.</p>
-          <GoogleButton next={next} />
-        </div>
+      <main className="mx-auto flex max-w-md flex-col items-center p-6">
+        <h1 className="mb-4 text-lg font-semibold">Sign in to continue</h1>
+        <SignInForm />
       </main>
     );
   }

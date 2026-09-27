@@ -14,7 +14,7 @@ import { displayName, useGroupData, type GroupData } from "@/lib/useGroupData";
 
 export default function ListingPage() {
   const { id } = useParams<{ id: string }>();
-  return <RequireAuth next={`/listings/${id}`}>{(s) => <ListingDetail id={id} userId={s.user.id} />}</RequireAuth>;
+  return <RequireAuth>{(s) => <ListingDetail id={id} userId={s.user.id} />}</RequireAuth>;
 }
 
 function ListingDetail({ id, userId }: { id: string; userId: string }) {

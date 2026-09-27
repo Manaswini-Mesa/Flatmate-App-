@@ -8,7 +8,7 @@ import { errorMessage, supabase } from "@/lib/supabase";
 
 export default function JoinPage() {
   const { code } = useParams<{ code: string }>();
-  return <RequireAuth next={`/join/${code}`}>{() => <Joiner code={code} />}</RequireAuth>;
+  return <RequireAuth>{() => <Joiner code={code} />}</RequireAuth>;
 }
 
 function Joiner({ code }: { code: string }) {

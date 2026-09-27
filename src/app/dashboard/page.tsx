@@ -14,7 +14,7 @@ import { useGroupData, type GroupData } from "@/lib/useGroupData";
 type Tab = "overview" | "flats" | "prefs" | "group";
 
 export default function DashboardPage() {
-  return <RequireAuth next="/dashboard">{(session) => <Dashboard userId={session.user.id} />}</RequireAuth>;
+  return <RequireAuth>{(session) => <Dashboard userId={session.user.id} />}</RequireAuth>;
 }
 
 function Dashboard({ userId }: { userId: string }) {

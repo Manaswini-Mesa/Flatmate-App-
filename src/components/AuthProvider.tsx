@@ -37,8 +37,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
-
-export function signInWithGoogle(next: string = "/dashboard") {
-  const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
-  return supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo } });
-}
