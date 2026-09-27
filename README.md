@@ -1,7 +1,7 @@
-# Flatmate Finder (Pune)
+# My Flattie (Pune)
 
 Three roommates each fill in their own preferences, add flats manually, and see — for every flat — whether it
-passes everyone's must-haves, each person's score, and who is compromising on what. A flat reaches the
+passes everyone's must-haves, a **match %** (sorted highest to lowest), and who is compromising on what. A flat reaches the
 **agreed shortlist** only when all 3 roommates vote *shortlist* and every must-have passes for all three.
 
 Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, email + password auth, Realtime) · Vercel.
@@ -10,21 +10,23 @@ Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Post
 
 | Piece | Where |
 |---|---|
-| Database tables, access rules (RLS), group functions, realtime | `supabase/migrations/0001_init.sql` |
+| Database tables, access rules (RLS), group functions, realtime | `supabase/migrations/0001_init.sql`, `0002_more_details.sql` |
 | Matching rules (pure functions) + tests | `src/lib/matching.ts`, `src/lib/matching.test.ts` |
 | Loading group data + live updates | `src/lib/useGroupData.ts` |
 | Screens | `src/app/` (dashboard, listing detail, join link, auth callback) |
 
 **Matching rules**
 
-- Budget: rent is split equally three ways; your share must be ≤ your max. Always a must-have.
+- Budget: (rent + maintenance) ÷ 3 must be ≤ your max. Upfront: (deposit + brokerage) ÷ 3 ≤ your max, if set. Always must-haves.
 - Areas you won't consider: always a must-have.
-- Flat features (lift, parking, bathrooms, bedrooms, pets, furnishing, flatmates allowed, move-in date) and
-  places you travel to (office, gym, family) can each be *must have*, *nice to have (weight 1–5)*, or *don't care*.
-- Lift only matters above the ground floor.
+- Every other feature (size, lift, parking, security, power backup, AC, washing machine, balcony, flatmates allowed,
+  non-veg cooking, guests, curfew, pets, move-in date) and every place you travel to can be *must have*,
+  *nice to have (weight 1–5)*, or *don't care*. Lift only matters above the ground floor.
 - Anything not known about a flat shows as **Needs checking** — never as a pass.
-- Score = weight of nice-to-haves met ÷ total nice-to-have weight × 100.
-- "Best options" = up to 3 flats with no deal-breakers, ranked by fewest open questions then average score.
+- **Match % per person** = points earned ÷ points possible. A must-have is worth 5 points, a nice-to-have its weight;
+  only a pass earns points. **Match % per flat** = average of the roommates who have filled in preferences.
+- The Flats dashboard is sorted from highest to lowest match %.
+- Agreed shortlist: all 3 vote shortlist **and** every must-have passes for all three.
 
 ## Run it on your computer
 
@@ -35,7 +37,7 @@ Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Post
 
 ## One-time setup (Supabase + Vercel)
 
-1. **Supabase** → new project → **SQL Editor** → paste all of `supabase/migrations/0001_init.sql` → Run.
+1. **Supabase** → new project → **SQL Editor** → run `supabase/migrations/0001_init.sql`, then `0002_more_details.sql`.
 2. **Supabase** → Authentication → Sign In / Providers → turn **Confirm email** off (sign-in is email + password, no emails sent).
 3. **Supabase** → Authentication → URL Configuration → Site URL = your Vercel URL.
 4. **Vercel** → Project → Settings → Environment Variables → add `NEXT_PUBLIC_SUPABASE_URL` and

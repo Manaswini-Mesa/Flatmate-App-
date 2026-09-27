@@ -27,8 +27,8 @@ export function GroupPanel({ data, userId, onLeft }: { data: GroupData; userId: 
   return (
     <div className="space-y-4">
       <section className="card">
-        <h2 className="font-semibold">Roommates ({data.members.length}/{GROUP_SIZE})</h2>
-        <ul className="mt-3 divide-y divide-slate-100">
+        <h2 className="font-semibold text-slate-100">Roommates ({data.members.length}/{GROUP_SIZE})</h2>
+        <ul className="mt-3 divide-y divide-slate-800">
           {data.members.map((m) => {
             const p = data.profiles[m.user_id];
             const filled = data.prefs[m.user_id]?.max_rent_share != null;
@@ -38,7 +38,7 @@ export function GroupPanel({ data, userId, onLeft }: { data: GroupData; userId: 
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.avatar_url} alt="" className="h-8 w-8 rounded-full" referrerPolicy="no-referrer" />
                 ) : (
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-slate-200 text-sm">
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-slate-700 text-sm">
                     {displayName(data.profiles, m.user_id)[0]}
                   </span>
                 )}
@@ -55,9 +55,9 @@ export function GroupPanel({ data, userId, onLeft }: { data: GroupData; userId: 
       </section>
 
       {open > 0 && (
-        <section className="card border-emerald-200 bg-emerald-50">
-          <h2 className="font-semibold">Invite {open === 1 ? "your last roommate" : `${open} more roommates`}</h2>
-          <p className="mt-1 text-sm text-slate-600">Send them this link, or tell them the code.</p>
+        <section className="card border-emerald-500/30 bg-emerald-500/10">
+          <h2 className="font-semibold text-slate-100">Invite {open === 1 ? "your last roommate" : `${open} more roommates`}</h2>
+          <p className="mt-1 text-sm text-slate-400">Send them this link, or tell them the code.</p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <input readOnly value={link} className="input font-mono text-xs" onFocus={(e) => e.target.select()} />
             <button onClick={copy} className="btn-primary shrink-0">
@@ -71,12 +71,12 @@ export function GroupPanel({ data, userId, onLeft }: { data: GroupData; userId: 
       )}
 
       <section className="card">
-        <h2 className="font-semibold">Leave group</h2>
-        <p className="mt-1 text-sm text-slate-600">Flats and comments stay for the others. Your preferences and votes are removed.</p>
+        <h2 className="font-semibold text-slate-100">Leave group</h2>
+        <p className="mt-1 text-sm text-slate-400">Flats and comments stay for the others. Your preferences and votes are removed.</p>
         <button onClick={leave} className="btn-danger mt-3">
           Leave {data.group.name}
         </button>
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
       </section>
     </div>
   );

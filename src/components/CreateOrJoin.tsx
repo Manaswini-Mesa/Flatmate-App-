@@ -20,8 +20,8 @@ export function CreateOrJoin({ onDone }: { onDone: () => void }) {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-bold">Start with your group</h1>
-      <p className="mt-1 text-slate-600">One person creates the group and shares the invite. The other two join. Max 3 people.</p>
+      <h1 className="text-2xl font-bold text-slate-50">Start with your group</h1>
+      <p className="mt-1 text-slate-400">One person creates the group and shares the invite. The other two join. Max 3 people.</p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <form
           className="card"
@@ -30,7 +30,7 @@ export function CreateOrJoin({ onDone }: { onDone: () => void }) {
             run(() => supabase.rpc("create_group", { group_name: name }));
           }}
         >
-          <h2 className="font-semibold">Create a new group</h2>
+          <h2 className="font-semibold text-slate-100">Create a new group</h2>
           <label className="label mt-3" htmlFor="gname">
             Group name
           </label>
@@ -46,7 +46,7 @@ export function CreateOrJoin({ onDone }: { onDone: () => void }) {
             run(() => supabase.rpc("join_group", { code }));
           }}
         >
-          <h2 className="font-semibold">Join with an invite code</h2>
+          <h2 className="font-semibold text-slate-100">Join with an invite code</h2>
           <label className="label mt-3" htmlFor="gcode">
             Invite code
           </label>
@@ -64,7 +64,7 @@ export function CreateOrJoin({ onDone }: { onDone: () => void }) {
           </button>
         </form>
       </div>
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
     </main>
   );
 }

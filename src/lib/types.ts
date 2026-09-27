@@ -1,6 +1,7 @@
 export type Importance = "hard" | "nice" | "none";
 export type VoteValue = "shortlist" | "discuss" | "reject";
 export type Furnishing = "unfurnished" | "semi" | "furnished";
+export type Diet = "veg" | "eggetarian" | "non_veg";
 
 export type CriterionSetting = {
   importance: Importance;
@@ -35,6 +36,8 @@ export type Preferences = {
   max_deposit_share: number | null;
   excluded_areas: string[];
   criteria: Record<string, CriterionSetting>;
+  diet?: Diet | null;
+  notes?: string | null;
   updated_at?: string;
 };
 
@@ -66,6 +69,16 @@ export type Listing = {
   pet_friendly: boolean | null;
   furnishing: Furnishing | null;
   sharing_allowed: boolean | null;
+  maintenance: number | null;
+  brokerage: number | null;
+  non_veg_allowed: boolean | null;
+  guests_allowed: boolean | null;
+  no_curfew: boolean | null;
+  gated_security: boolean | null;
+  power_backup: boolean | null;
+  washing_machine: boolean | null;
+  air_conditioning: boolean | null;
+  balcony: boolean | null;
   available_from: string | null;
   notes: string | null;
   created_at: string;

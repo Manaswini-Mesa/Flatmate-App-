@@ -21,8 +21,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   if (!isConfigured) {
     return (
       <main className="mx-auto max-w-xl p-6">
-        <h1 className="text-xl font-semibold">Almost there</h1>
-        <p className="mt-2 text-slate-600">
+        <h1 className="text-xl font-semibold text-slate-50">Almost there</h1>
+        <p className="mt-2 text-slate-400">
           Supabase isn&apos;t connected yet. Add <code>NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
           <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> to <code>.env.local</code> (or Vercel&apos;s environment
           variables) and restart.

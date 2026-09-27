@@ -28,7 +28,7 @@ export function SignInForm() {
 
   return (
     <form onSubmit={submit} className="card w-full max-w-sm space-y-3 text-left">
-      <div className="grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1 text-sm">
+      <div className="grid grid-cols-2 gap-1 rounded-lg bg-slate-800 p-1 text-sm">
         {(["signup", "signin"] as const).map((m) => (
           <button
             key={m}
@@ -37,7 +37,7 @@ export function SignInForm() {
               setMode(m);
               setError(null);
             }}
-            className={`rounded-md py-1.5 font-medium ${mode === m ? "bg-white shadow-sm" : "text-slate-600"}`}
+            className={`rounded-md py-1.5 font-medium ${mode === m ? "bg-slate-700 text-slate-50 shadow-sm" : "text-slate-400"}`}
           >
             {m === "signup" ? "Create account" : "Sign in"}
           </button>
@@ -76,7 +76,7 @@ export function SignInForm() {
       <button className="btn-primary w-full py-2.5" disabled={busy}>
         {busy ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
       </button>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-400">{error}</p>}
     </form>
   );
 }

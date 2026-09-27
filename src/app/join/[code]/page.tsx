@@ -29,7 +29,7 @@ function Joiner({ code }: { code: string }) {
     <main className="mx-auto max-w-md p-6 text-center">
       {error ? (
         <div className="card">
-          <p className="text-red-600">{error}</p>
+          <p className="text-red-400">{error}</p>
           <Link href="/dashboard" className="btn-secondary mt-4">
             Go to my dashboard
           </Link>

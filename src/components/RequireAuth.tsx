@@ -12,7 +12,7 @@ export function RequireAuth({ children }: { children: (session: Session) => Reac
   if (!session) {
     return (
       <main className="mx-auto flex max-w-md flex-col items-center p-6">
-        <h1 className="mb-4 text-lg font-semibold">Sign in to continue</h1>
+        <h1 className="mb-4 text-lg font-semibold text-slate-100">Sign in to continue</h1>
         <SignInForm />
       </main>
     );

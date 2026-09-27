@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Flatmate Finder — Pune",
-  description: "Three roommates, one form each, and a clear view of which flats work for everyone.",
+  title: "My Flattie",
+  description: "Three roommates, one form each, and a clear match % for every flat in Pune.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
