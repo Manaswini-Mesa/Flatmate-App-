@@ -4,7 +4,7 @@ Three roommates each fill in their own preferences, add flats manually, and see 
 passes everyone's must-haves, each person's score, and who is compromising on what. A flat reaches the
 **agreed shortlist** only when all 3 roommates vote *shortlist* and every must-have passes for all three.
 
-Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, Google auth, Realtime) · Vercel.
+Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, email + password auth, Realtime) · Vercel.
 
 ## How it works
 
@@ -33,16 +33,12 @@ Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Post
 3. `npm run dev` → open http://localhost:3000
 4. `npm test` runs the matching tests.
 
-## One-time setup (Supabase + Google + Vercel)
+## One-time setup (Supabase + Vercel)
 
 1. **Supabase** → new project → **SQL Editor** → paste all of `supabase/migrations/0001_init.sql` → Run.
-2. **Google Cloud Console** → APIs & Services → OAuth consent screen (External; add all 3 roommates' Gmail
-   addresses as test users) → Credentials → Create OAuth client ID → *Web application* →
-   Authorized redirect URI = the **Callback URL** shown in Supabase → Authentication → Sign In / Providers → Google.
-3. **Supabase** → Authentication → Sign In / Providers → Google → enable, paste the Client ID and Client Secret.
-4. **Supabase** → Authentication → URL Configuration → Site URL = your Vercel URL; Redirect URLs =
-   `https://YOUR-APP.vercel.app/**` and `http://localhost:3000/**`.
-5. **Vercel** → Project → Settings → Environment Variables → add `NEXT_PUBLIC_SUPABASE_URL` and
+2. **Supabase** → Authentication → Sign In / Providers → turn **Confirm email** off (sign-in is email + password, no emails sent).
+3. **Supabase** → Authentication → URL Configuration → Site URL = your Vercel URL.
+4. **Vercel** → Project → Settings → Environment Variables → add `NEXT_PUBLIC_SUPABASE_URL` and
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` → redeploy.
 
 Listings are entered by hand on purpose: property portals don't offer public APIs or permission to scrape.
