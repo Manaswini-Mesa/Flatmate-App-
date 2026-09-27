@@ -56,10 +56,10 @@ export type Listing = {
   group_id: string;
   added_by: string | null;
   title: string;
-  area: string;
+  area: string | null;
   address: string | null;
   source_url: string | null;
-  rent: number;
+  rent: number | null;
   deposit: number | null;
   bedrooms: number | null;
   bathrooms: number | null;
@@ -80,6 +80,9 @@ export type Listing = {
   air_conditioning: boolean | null;
   balcony: boolean | null;
   available_from: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  image_url: string | null;
   notes: string | null;
   created_at: string;
   updated_at: string;

@@ -53,6 +53,10 @@ export function ListingCard({ listing, result, data, rank }: { listing: Listing;
     <article className="card transition hover:border-slate-700">
       <div className="flex gap-4">
         <MatchBadge pct={result.match} />
+        {listing.image_url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={listing.image_url} alt="" className="hidden h-20 w-28 shrink-0 rounded-lg object-cover sm:block" referrerPolicy="no-referrer" />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             {rank !== undefined && <span className="text-xs font-semibold text-slate-500">#{rank}</span>}
@@ -70,7 +74,8 @@ export function ListingCard({ listing, result, data, rank }: { listing: Listing;
             {listing.title}
           </Link>
           <p className="text-sm text-slate-400">
-            {listing.area} · ₹{fmt(rentShare(listing))}/mo each
+            {listing.area ?? "Area not known"} ·{" "}
+            {rentShare(listing) != null ? `₹${fmt(rentShare(listing)!)}/mo each` : "Rent not known"}
             {listing.bedrooms != null && ` · ${listing.bedrooms} BHK`}
             {listing.furnishing && ` · ${FURNISHING_LABELS[listing.furnishing]}`}
           </p>

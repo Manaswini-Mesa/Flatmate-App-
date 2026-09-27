@@ -1,6 +1,6 @@
 # My Flattie (Pune)
 
-Three roommates each fill in their own preferences, add flats manually, and see — for every flat — whether it
+Three roommates each fill in their own preferences, add flats by pasting a listing link, and see — for every flat — whether it
 passes everyone's must-haves, a **match %** (sorted highest to lowest), and who is compromising on what. A flat reaches the
 **agreed shortlist** only when all 3 roommates vote *shortlist* and every must-have passes for all three.
 
@@ -10,7 +10,8 @@ Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Post
 
 | Piece | Where |
 |---|---|
-| Database tables, access rules (RLS), group functions, realtime | `supabase/migrations/0001_init.sql`, `0002_more_details.sql` |
+| Database tables, access rules (RLS), group functions, realtime | `supabase/migrations/0001_init.sql`, `0002_more_details.sql`, `0003_link_import.sql` |
+| Reading a listing link (NoBroker data, schema.org, page preview, the URL itself) + tests | `src/lib/extract.ts`, `src/app/api/analyze/route.ts` |
 | Matching rules (pure functions) + tests | `src/lib/matching.ts`, `src/lib/matching.test.ts` |
 | Loading group data + live updates | `src/lib/useGroupData.ts` |
 | Screens | `src/app/` (dashboard, listing detail, join link, auth callback) |
@@ -37,10 +38,12 @@ Stack: Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Post
 
 ## One-time setup (Supabase + Vercel)
 
-1. **Supabase** → new project → **SQL Editor** → run `supabase/migrations/0001_init.sql`, then `0002_more_details.sql`.
+1. **Supabase** → new project → **SQL Editor** → run `supabase/migrations/0001_init.sql`, then `0002_more_details.sql`, then `0003_link_import.sql`.
 2. **Supabase** → Authentication → Sign In / Providers → turn **Confirm email** off (sign-in is email + password, no emails sent).
 3. **Supabase** → Authentication → URL Configuration → Site URL = your Vercel URL.
 4. **Vercel** → Project → Settings → Environment Variables → add `NEXT_PUBLIC_SUPABASE_URL` and
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` → redeploy.
 
-Listings are entered by hand on purpose: property portals don't offer public APIs or permission to scrape.
+**Adding flats:** paste a link and the app downloads that one page (like a chat app's link preview) and reads the details.
+NoBroker pages include full listing data. 99acres, Housing.com and MagicBricks block servers, so for those only the details in the
+link itself (BHK, area, sometimes rent) are used; anything missing shows as *Needs checking* and can be fixed with *Edit details*.

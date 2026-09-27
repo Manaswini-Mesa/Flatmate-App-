@@ -1,10 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { CreateOrJoin } from "@/components/CreateOrJoin";
 import { GroupPanel } from "@/components/GroupPanel";
-import { ListingForm } from "@/components/ListingForm";
+import { AddFlatByLink } from "@/components/AddFlatByLink";
 import { PreferencesForm } from "@/components/PreferencesForm";
 import { RequireAuth } from "@/components/RequireAuth";
 import { ListingCard, matchColor } from "@/components/Results";
@@ -104,8 +103,6 @@ function SetupNotice({ data, userId, goTo }: { data: GroupData; userId: string; 
 
 function Flats({ data, userId, goTo }: { data: GroupData; userId: string; goTo: (t: Tab) => void }) {
   const ranked = useRanked(data);
-  const [adding, setAdding] = useState(false);
-  const router = useRouter();
   const best = ranked[0]?.result.match ?? null;
   const worksForAll = ranked.filter((r) => r.result.everyonePasses).length;
   const agreed = ranked.filter((r) => r.result.agreed).length;
@@ -121,25 +118,12 @@ function Flats({ data, userId, goTo }: { data: GroupData; userId: string; goTo: 
         <Stat label="Agreed shortlist" value={String(agreed)} />
       </div>
 
-      {adding ? (
-        <ListingForm
-          groupId={data.group.id}
-          userId={userId}
-          onSaved={(id) => router.push(`/listings/${id}`)}
-          onCancel={() => setAdding(false)}
-        />
-      ) : (
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-400">Sorted from highest to lowest match across all 3 roommates.</p>
-          <button className="btn-primary" onClick={() => setAdding(true)}>
-            + Add a flat
-          </button>
-        </div>
-      )}
+      <AddFlatByLink data={data} userId={userId} />
+      <p className="text-sm text-slate-400">Sorted from highest to lowest match across all 3 roommates.</p>
 
-      {ranked.length === 0 && !adding && (
+      {ranked.length === 0 && (
         <div className="card text-center text-sm text-slate-400">
-          No flats yet. Click <strong className="text-slate-200">+ Add a flat</strong> and paste a listing link to get started.
+          No flats yet. Paste a listing link above to get started.
         </div>
       )}
       <div className="space-y-3">

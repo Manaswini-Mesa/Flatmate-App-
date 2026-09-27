@@ -13,7 +13,7 @@ function listing(over: Partial<Listing> = {}): Listing {
     has_lift: true, parking: true, pet_friendly: false, furnishing: "semi", sharing_allowed: true,
     maintenance: null, brokerage: null, non_veg_allowed: true, guests_allowed: true, no_curfew: true,
     gated_security: true, power_backup: true, washing_machine: false, air_conditioning: false, balcony: true,
-    available_from: "2026-10-01", notes: null, created_at: "", updated_at: "",
+    available_from: "2026-10-01", latitude: null, longitude: null, image_url: null, notes: null, created_at: "", updated_at: "",
     ...over,
   };
 }
@@ -36,6 +36,12 @@ test("upfront limit covers deposit + brokerage", () => {
   const p = prefs("riya", { max_deposit_share: 40000 });
   assert.equal(evaluatePerson("riya", listing({ deposit: 90000, brokerage: 30000 }), p, [], []).hardStatus, "pass");
   assert.equal(evaluatePerson("riya", listing({ deposit: 90000, brokerage: 45000 }), p, [], []).hardStatus, "fail");
+});
+
+test("unknown rent or area needs checking instead of failing", () => {
+  const r = evaluatePerson("riya", listing({ rent: null, area: null }), prefs("riya"), [], []);
+  assert.equal(r.hardStatus, "unknown");
+  assert.deepEqual(r.toCheck, ["Rent not known yet", "Area not known yet"]);
 });
 
 test("excluded area fails the must-have", () => {

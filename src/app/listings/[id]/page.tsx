@@ -93,10 +93,11 @@ function ListingSummary({
   onDelete: () => void;
 }) {
   const up = upfrontShare(listing);
+  const each = rentShare(listing);
   const facts: [string, string][] = [
-    ["Rent", `₹${fmt(listing.rent)}/mo`],
+    ["Rent", listing.rent != null ? `₹${fmt(listing.rent)}/mo` : "Not sure"],
     ["Maintenance", listing.maintenance != null ? `₹${fmt(listing.maintenance)}/mo` : "Not sure"],
-    ["Per person", `₹${fmt(rentShare(listing))}/mo`],
+    ["Per person", each != null ? `₹${fmt(each)}/mo` : "Not sure"],
     ["Upfront each", up != null ? `₹${fmt(up)}` : "Not sure"],
     ["Bedrooms", listing.bedrooms?.toString() ?? "Not sure"],
     ["Bathrooms", listing.bathrooms?.toString() ?? "Not sure"],
@@ -114,7 +115,7 @@ function ListingSummary({
         <div className="min-w-0 flex-1">
           <h1 className="text-xl font-bold text-slate-50">{listing.title}</h1>
           <p className="text-sm text-slate-400">
-            {listing.area}
+            {listing.area ?? "Area not known"}
             {listing.address && ` · ${listing.address}`} · added by {displayName(data.profiles, listing.added_by)}
           </p>
           {listing.source_url && (
@@ -125,7 +126,7 @@ function ListingSummary({
         </div>
         <div className="flex gap-2">
           <button className="btn-secondary" onClick={onEdit}>
-            Edit
+            Edit details
           </button>
           <button className="btn-danger" onClick={onDelete}>
             Delete
@@ -225,8 +226,13 @@ function TravelTimes({ listing, data, userId }: { listing: Listing; data: GroupD
     else setDraft((d) => Object.fromEntries(Object.entries(d).filter(([k]) => k !== placeId)));
   }
 
+  // Uses the flat's exact map position when the listing gave one.
+  const origin =
+    listing.latitude != null && listing.longitude != null
+      ? `${listing.latitude},${listing.longitude}`
+      : `${listing.address ?? ""} ${listing.area ?? ""}, Pune`;
   const mapsLink = (label: string) =>
-    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(`${listing.address ?? ""} ${listing.area}, Pune`)}&destination=${encodeURIComponent(`${label}, Pune`)}`;
+    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(`${label}, Pune`)}`;
 
   return (
     <section className="card">

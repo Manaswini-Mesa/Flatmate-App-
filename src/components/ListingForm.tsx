@@ -30,7 +30,7 @@ export function ListingForm({
   const [f, setF] = useState({
     source_url: listing?.source_url ?? "",
     title: listing?.title ?? "",
-    area: listing?.area ?? "Baner",
+    area: listing?.area ?? "",
     address: listing?.address ?? "",
     rent: str(listing?.rent),
     maintenance: str(listing?.maintenance),
@@ -61,9 +61,9 @@ export function ListingForm({
     const row = {
       source_url: f.source_url.trim() || null,
       title: f.title.trim(),
-      area: f.area.trim(),
+      area: f.area.trim() || null,
       address: f.address.trim() || null,
-      rent: Number(f.rent),
+      rent: num(f.rent),
       maintenance: num(f.maintenance),
       deposit: num(f.deposit),
       brokerage: num(f.brokerage),
@@ -104,8 +104,8 @@ export function ListingForm({
         </label>
         <input id="url" className="input" type="url" placeholder="https://…" value={f.source_url} onChange={set("source_url")} autoFocus={!listing} />
         <p className="mt-1 text-xs text-slate-500">
-          {site ? `From ${site}. ` : ""}Open the listing and copy the details below — property sites don&apos;t allow apps to
-          read their pages automatically. Leave anything you don&apos;t know as &quot;Not sure yet&quot;.
+          {site ? `From ${site}. ` : ""}These details were read from the listing. Fix anything that&apos;s wrong, or fill in
+          what the listing didn&apos;t say (ask the owner). Leave the rest as &quot;Not sure yet&quot;.
         </p>
       </div>
 
@@ -118,9 +118,9 @@ export function ListingForm({
         </div>
         <div>
           <label className="label" htmlFor="area">
-            Area *
+            Area
           </label>
-          <input id="area" className="input" list="areas" value={f.area} onChange={set("area")} required />
+          <input id="area" className="input" list="areas" value={f.area} onChange={set("area")} />
           <datalist id="areas">
             {PUNE_AREAS.map((a) => (
               <option key={a} value={a} />
@@ -138,9 +138,9 @@ export function ListingForm({
       <Group title="Costs (whole flat)">
         <div>
           <label className="label" htmlFor="rentl">
-            Monthly rent (₹) *
+            Monthly rent (₹)
           </label>
-          <input id="rentl" className="input" type="number" min={1} value={f.rent} onChange={set("rent")} required />
+          <input id="rentl" className="input" type="number" min={1} value={f.rent} onChange={set("rent")} />
         </div>
         <div>
           <label className="label" htmlFor="maint">

@@ -62,8 +62,9 @@ const FURNISHING_NAME: Record<string, string> = {
 
 type CriterionEval = { label: string; status: CheckStatus; detail: string };
 
-// Monthly cost per person: rent + maintenance, split equally.
-export function rentShare(l: Pick<Listing, "rent" | "maintenance">): number {
+// Monthly cost per person: rent + maintenance, split equally. Null if the rent isn't known.
+export function rentShare(l: Pick<Listing, "rent" | "maintenance">): number | null {
+  if (l.rent === null) return null;
   return Math.ceil((l.rent + (l.maintenance ?? 0)) / GROUP_SIZE);
 }
 
@@ -156,6 +157,8 @@ export function evaluatePerson(
   const share = rentShare(listing);
   if (!filledIn) {
     hardChecks.push(mustHave("budget", "Budget", "unknown", "Hasn't filled in preferences yet"));
+  } else if (share === null) {
+    hardChecks.push(mustHave("budget", "Budget", "unknown", "Rent not known yet"));
   } else {
     const max = prefs!.max_rent_share!;
     const incl = listing.maintenance ? " incl. maintenance" : "";
@@ -181,12 +184,17 @@ export function evaluatePerson(
 
   // Excluded areas (always a must-have).
   if (prefs) {
-    const excluded = prefs.excluded_areas.some((a) => a.trim().toLowerCase() === listing.area.trim().toLowerCase());
-    hardChecks.push(
-      excluded
-        ? mustHave("area", "Area", "fail", `Won't live in ${listing.area}`)
-        : mustHave("area", "Area", "pass", `${listing.area} is OK`),
-    );
+    const area = listing.area?.trim();
+    if (!area) {
+      hardChecks.push(mustHave("area", "Area", "unknown", "Area not known yet"));
+    } else {
+      const excluded = prefs.excluded_areas.some((a) => a.trim().toLowerCase() === area.toLowerCase());
+      hardChecks.push(
+        excluded
+          ? mustHave("area", "Area", "fail", `Won't live in ${area}`)
+          : mustHave("area", "Area", "pass", `${area} is OK`),
+      );
+    }
   }
 
   // Flat features and house rules.
